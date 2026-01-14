@@ -18,31 +18,16 @@ using namespace std;
 */
 
 int solution(vector<vector<int>> sizes) {
-    int answer = 0;
-    
     int wMAX = 0;
     int hMAX = 0;
-    int wMIN = 10001;
-    int hMIN = 10001;
-    
-    for (int i = 0; i < sizes.size(); i++)
-    {
-        int W = sizes[i][0];
-        int H = sizes[i][1];
-        
-        if (W < H)
-        {
-            sizes[i][0] = H;
-            sizes[i][1] = W;
-            
-            W = sizes[i][0];
-            H = sizes[i][1];
-        }
-        
-        wMAX = wMAX > W ? wMAX : W;
-        hMAX = hMAX > H ? hMAX : H;
+
+    for (auto& card : sizes) {
+        int big = max(card[0], card[1]);
+        int small = min(card[0], card[1]);
+
+        wMAX = max(wMAX, big);
+        hMAX = max(hMAX, small);
     }
-    
-    answer = wMAX * hMAX;
-    return answer;
+
+    return wMAX * hMAX;
 }
