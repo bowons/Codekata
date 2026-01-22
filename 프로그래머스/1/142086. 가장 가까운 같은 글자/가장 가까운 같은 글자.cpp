@@ -1,24 +1,18 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
 vector<int> solution(string s) {
     vector<int> answer;
-    
-    for (int i = 0; i < s.length(); i++) 
-    {
-        string subs = s.substr(0, i);
-        auto it = find(subs.rbegin(),subs.rend(), s[i]);
-        
-        if (it != subs.rend())
-        {
-            int pos = distance(subs.rbegin(), it) + 1;
-            answer.push_back(pos);
-        }
-        else
-        {
+    unordered_map<char, int> lastPos;  // 각 문자의 마지막 위치 저장
+
+    for (int i = 0; i < s.length(); i++) {
+        if (lastPos.find(s[i]) != lastPos.end()) {
+            answer.push_back(i - lastPos[s[i]]);
+        } else {
             answer.push_back(-1);
         }
+        lastPos[s[i]] = i;  // 현재 위치 갱신
     }
+
     return answer;
 }
