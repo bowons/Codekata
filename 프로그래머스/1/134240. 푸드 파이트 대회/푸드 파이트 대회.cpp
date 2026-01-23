@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -17,9 +18,9 @@ using namespace std;
     1. 반복자를 통해 begin + 1 - end까지 돎, 나누기 2 하며 원소 카운트만큼 숫자 출력
     2. 물 출력
     3. 반복자를 통해 rbegin - rend + 1 까지 돎, 나누기 2 하며 원소 카운트 만큼 숫자 출력
-*/
-
-string solution(vector<int> food) {
+    
+    // 이전 코드
+    string solution(vector<int> food) {
     string answer = "";
     
     // 1. 왼쪽 절반 만들기
@@ -43,5 +44,25 @@ string solution(vector<int> food) {
             answer += to_string(index);
         index--; // 가감
     }
+    return answer;
+}
+*/
+
+/*
+    NEW TODO
+    1. for문으로 food 벡터 순회 (인덱스 1부터)
+    2. food[i] / 2 만큼 i번 음식을 left에 추가
+    3. left + "0" (물)
+    4. left를 reverse해서 오른쪽 추가
+*/
+string solution(vector<int> food) {
+    string left = "";
+    
+    for (int i = 1; i < food.size(); i++)
+        left += string(food[i] / 2, '0' + i);  // 문자 i를 (food[i]/2)개 추가
+    
+    string answer = left + "0";
+    reverse(left.begin(), left.end());
+    answer += left;
     return answer;
 }
