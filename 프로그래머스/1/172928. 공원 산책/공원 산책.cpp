@@ -1,73 +1,68 @@
 #include <string>
 #include <vector>
+#include <map>
+#include <sstream>
+
+// 핵심은 방향을 매핑하는 것
 
 using namespace std;
 
-// 핵심 구현 포인트
-
-// 1. 2차원 배열에서 시작 위치 찾기
-// 2. 문자열 파싱해 방향과 거리 분리
-// 3. 한 칸씩 이동하여 충돌 체크 
-
 vector<int> solution(vector<string> park, vector<string> routes) {
-    vector<int> answer;
-    int Height = park.size();
-    int Width = park[0].size();
-    int Row = 0, Col = 0;
-    
-    // 1. S 위치 탐색
-    for (int i = 0; i < Height; i++)
+    map<char, pair<int, int>> dir = 
     {
-        for (int j = 0; j < Width; j++)
+        { 'N', {0, -1} },
+        { 'S', {0, +1} },
+        { 'W', {-1, 0} },
+        { 'E', {+1, 0} }
+    };
+    
+    int height = park.size();
+    int width = park[0].size();
+    int curX, curY;
+    
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
         {
             if (park[i][j] == 'S')
             {
-                Row = i; Col = j;
-                break;
+                curX = j;
+                curY = i;
             }
         }
     }
     
-    // 2. 이동 수행
-    for (string route : routes)
+    for(string route : routes)    
     {
-        char Direction = route[0];
-        char Count = route[2] - '0';
+        stringstream ss(route);
+        char op;
+        int n;
+        ss >> op >> n;
         
-        int temp_row = Row;
-        int temp_col = Col;
+        int dx = dir[op].first;
+        int dy = dir[op].second;
         
-        bool bIsPossible = true;
+        int nextX = curX;
+        int nextY = curY;
+        bool isOk = true;
         
-        for (int i = 0; i < Count; i++)
-        {
-            if (Direction == 'N') temp_row--;
-            else if (Direction == 'S') temp_row++;
-            else if (Direction == 'W') temp_col--;
-            else if (Direction == 'E') temp_col++;
+        for(int i = 0; i < n; i++) {
+            nextX += dx;
+            nextY += dy;
             
-            // 범위를 벗어나는지 체크한다
-            if (temp_row < 0 || temp_row >= Height || temp_col < 0 || temp_col >= Width)
+            if (nextX < 0 || nextY < 0 || nextX >= width || nextY >= height || park[nextY][nextX] == 'X')
             {
-                bIsPossible = false;
-                break;
-            }
-            
-            // 장애물이 있는지 체크한다
-            if (park[temp_row][temp_col] == 'X')
-            {
-                bIsPossible = false;
+                isOk = false;
                 break;
             }
         }
         
-        if (bIsPossible)
+        if (isOk)
         {
-            Row = temp_row;
-            Col = temp_col;
+            curX = nextX;
+            curY = nextY;
         }
     }
     
-    
-    return {Row, Col};
+    return {curY, curX};
 }
