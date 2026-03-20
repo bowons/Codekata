@@ -2,21 +2,28 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+
 using namespace std;
+/*
+    TODO: stringstream으로 문자열 쪼개서, 최대 최소 구하면 된다.
+*/
 
 string solution(string s) {
-    vector<int> nums;
-    stringstream ss(s);
-    string temp;
+    std::stringstream ss(s);
     
-    // 공백으로 분리해서 정수로 변환
-    while (ss >> temp) {
-        nums.push_back(stoi(temp));
+    vector<int> numVec;
+    
+    for (auto& c : s)
+    {
+        int toInt;
+        ss >> toInt;
+        
+        numVec.push_back(toInt);
     }
     
-    int minVal = *min_element(nums.begin(), nums.end());
-    int maxVal = *max_element(nums.begin(), nums.end());
+    std::stringstream res;
+    res << *min_element(numVec.begin(), numVec.end()) 
+        << " " << *max_element(numVec.begin(), numVec.end());
     
-    string answer = to_string(minVal) + " " + to_string(maxVal);
-    return answer;
+    return res.str();
 }
