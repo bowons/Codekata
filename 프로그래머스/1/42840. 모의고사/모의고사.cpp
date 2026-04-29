@@ -5,31 +5,32 @@
 using namespace std;
 
 vector<int> solution(vector<int> answers) {
-    vector<int> first = {1, 2, 3, 4, 5};
-    vector<int> second = {2, 1, 2, 3, 2, 4, 2, 5};
-    vector<int> third = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+    // 수포자 3명의 패턴을 배열로 먼저 만듬
     
-    vector<int> answer;
-    vector<int> hits(3,0);
+    vector<int> p1 = {1,2,3,4,5};
+    vector<int> p2 = {2,1,2,3,2,4,2,5};
+    vector<int> p3 = {3,3,1,1,2,2,4,4,5,5};
     
-    for (int i = 0; i < answers.size(); i++)
-    {        
-        // 각 배열 size 기준 % 연산 해서 순환시켜 hit 개수 체크
-        if (first[i % first.size()] == answers[i]) hits[0]++;
-        if (second[i % second.size()] == answers[i]) hits[1]++;
-        if (third[i % third.size()] == answers[i]) hits[2]++;
-    }
-    // hit 맞춘 순서 별로 answer에 입력
+    int n = answers.size();
     
-    int maxhit = *max_element(hits.begin(), hits.end());
+    int p1cnt = 0;
+    int p2cnt = 0;
+    int p3cnt = 0;
     
-    if (maxhit > 0)
+    // 배열 길이만큼 순회 돌면서 패턴 크기마다 체크 하면?
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < 3; i++)
-        {
-            if (hits[i] == maxhit) // 여러명일 경우 여러번 추가(오름차순)
-                answer.push_back(i + 1);
-        }
+        if (answers[i] == p1[i % p1.size()]) p1cnt++;
+        if (answers[i] == p2[i % p2.size()]) p2cnt++;
+        if (answers[i] == p3[i % p3.size()]) p3cnt++;
     }
-    return answer;
+    
+    int maxScore = max({p1cnt, p2cnt, p3cnt});
+    
+    vector<int> result;
+    if (p1cnt == maxScore) result.push_back(1);
+    if (p2cnt == maxScore) result.push_back(2);
+    if (p3cnt == maxScore) result.push_back(3);
+    
+    return result;
 }
