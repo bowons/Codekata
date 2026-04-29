@@ -1,33 +1,26 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
-/*
-    요구사항: 각자 다른 크기의 명함을 모두 수용할 수 있는 지갑을 만들어야 함
-    명함은 가로 세로가 주어지며 가로와 세로를 돌릴 수 있다.
-    
-    1. 예시의 경우 2번 명함을 돌려서 70, 30으로 만들었음
-    2. 돌린 경우, wMAX(60 / 70 / 60 / 80) = 80 , hMAX = (50/30/30/40) = 50
-    3. wMAX = 80, hMAX = 50, 지갑 크기는 80 * 50이므로 두 MAX 값 곱한것과 일치
-    
-    TODO: 
-    1. 가로와 세로를 뒤집을 기준을 세워, 뒤집을 함수 작성
-        - W < H
-    2. 가로 세로 배열를 나누어 wMAX와 hMAX를 구함
-    3. 둘을 곱하여 answer 반환
-*/
-
 int solution(vector<vector<int>> sizes) {
-    int wMAX = 0;
-    int hMAX = 0;
-
-    for (auto& card : sizes) {
-        int big = max(card[0], card[1]);
-        int small = min(card[0], card[1]);
-
-        wMAX = max(wMAX, big);
-        hMAX = max(hMAX, small);
+    // 1. 가로와 세로가 전환이 가능하다. 따라서 max값을 구할 때 고려해서 비교를 해야 함
+    // 2. 전체 배열을 순회하며 가로와 세로의 max값을 구한다.
+    // 3. 가로와 세로의 max를 구하고 난 이후에 곱해서 값을 반환한다.
+    int widthMax = 0;
+    int heightMax = 0;
+    
+    for (auto& size : sizes) 
+    {
+        // 세로와 가로 돌려가며 두번을 비교해본다, 두 가지는 동시에 일어날 수 없다.
+        int width = max(size[0], size[1]); // 두 값중 긴 값을 width로 취함
+        int height = min(size[0], size[1]); // 두 값중 짧은 값을 height로 취함
+        
+        widthMax = max(widthMax, width);
+        heightMax = max(heightMax, height);
     }
-
-    return wMAX * hMAX;
+    
+    int answer = widthMax * heightMax;
+    return answer;
 }
